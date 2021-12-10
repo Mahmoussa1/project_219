@@ -1,3 +1,96 @@
+fig3, ax = plt.subplots(figsize=(25,10))
+#Set up the plot axes
+ax1 = plt.subplot2grid((1,6), (0,0), rowspan=1, colspan = 1)
+ax2 = plt.subplot2grid((1,6), (0,1), rowspan=1, colspan = 1, sharey = ax1)
+ax3 = plt.subplot2grid((1,6), (0,2), rowspan=1, colspan = 1, sharey = ax1)
+ax5 = ax3.twiny() #Twins the y-axis for the CNPOR with RHOB
+ax7 = ax2.twiny()
+
+# As our curve scales will be detached from the top of the track,
+# this code adds the top border back in without dealing with splines
+ax10 = ax1.twiny()
+ax10.xaxis.set_visible(False)
+ax11 = ax2.twiny()
+ax11.xaxis.set_visible(False)
+ax12 = ax3.twiny()
+ax12.xaxis.set_visible(False)
+
+# Gamma Ray track
+ax1.plot('GR', 'Depth', data=df_filtered, color = "green", lw = 0.5)
+ax1.set_xlabel("Gamma Ray")
+ax1.xaxis.label.set_color("green")
+# ax1.set_xlim(0, 200)
+ax1.set_ylabel("Depth (m)")
+ax1.tick_params(axis='x', colors="green")
+ax1.spines["top"].set_edgecolor("green")
+ax1.title.set_color('green')
+# ax1.set_xticks([0, 50, 100, 150, 200])
+
+
+# RILD
+ax2.plot('RILD', 'Depth', data=df_filtered, color='black', lw=1.5) # plot CNPOR from dt_filtered, color red, and the line width is 1.5
+# ax2.set_xlim(45, -15) # set the ranges from 45 to -15 (to invert the range)
+ax2.set_xlabel('RILD') # label x-axis
+ax2.xaxis.label.set_color("black") # x-axis red color
+ax2.tick_params(axis='x', colors="black") # parameters of x-axis red color
+ax2.spines["top"].set_edgecolor("black") # set the x-axis from the top with edge color red
+ax2.title.set_color('black')
+
+# RLL3
+ax7.plot('RLL3', 'Depth', data=df_filtered, color='blue', lw=1.5) # plot RHOB same as CNPOR
+ax7.set_xlabel('RLL3')
+ax7.xaxis.label.set_color("blue")
+ax7.spines["top"].set_position(("axes", 1.08))
+ax7.tick_params(axis='x', colors="blue")
+ax7.spines["top"].set_edgecolor("blue")
+ax7.title.set_color('blue')
+
+# CNPOR
+ax3.plot('CNPOR', 'Depth', data=df_filtered, color='red', lw=1.5)
+ax3.set_xlim(45, -15)
+ax3.set_xlabel('CNPOR')
+ax3.xaxis.label.set_color("red")
+ax3.tick_params(axis='x', colors="red")
+ax3.spines["top"].set_edgecolor("red")
+
+# RHOB
+ax5.plot('RHOB', 'Depth', data=df_filtered, color='yellow', lw=1.5)
+# ax2.set_xlim(45, -15)
+ax5.set_xlabel('RHOB')
+ax5.xaxis.label.set_color("yellow")
+ax5.spines["top"].set_position(("axes", 1.08))
+ax5.tick_params(axis='x', colors="yellow")
+ax5.spines["top"].set_edgecolor("yellow")
+
+x3=df_filtered['CNPOR']
+x5=df_filtered['RHOB']
+
+x = np.array(ax3.get_xlim())
+z = np.array(ax5.get_xlim())
+
+# here we add this equation to find the difference of x-values of each graph
+nz=((x5-np.max(z))/(np.min(z)-np.max(z)))*(np.max(x)-np.min(x))+np.min(x)
+
+# here we fill this difference with the colors (green when RHOB on the right and CNPOR on the left, yellow otherwise)
+ax3.fill_betweenx(df_filtered['Depth'], x3, nz, where=x3>=nz, interpolate=True, color='green')
+ax3.fill_betweenx(df_filtered['Depth'], x3, nz, where=x3<=nz, interpolate=True, color='yellow')
+
+# Common functions for setting up the plot can be extracted into
+# a for loop. This saves repeating code.
+for ax in [ax1, ax2, ax3]:
+    ax.set_ylim(2900, 2400)
+    ax.grid(which='major', color='lightgrey', linestyle='-')
+    ax.xaxis.set_ticks_position("top")
+    ax.xaxis.set_label_position("top")
+    ax.spines["top"].set_position(("axes", 1.02))
+
+for ax in [ax2, ax3]:
+    plt.setp(ax.get_yticklabels(), visible = False)
+
+plt.tight_layout()
+# fig.subplots_adjust(wspace = 0.15)
+plt.show()
+
 # project_219
 #linear regression and clustering
 import pandas as pd
