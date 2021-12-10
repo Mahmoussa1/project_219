@@ -1,3 +1,11 @@
+df_choose = df_drop.loc[(df_drop['Depth'] >= 2400) & (df_drop['Depth'] <= 2900)] # here we slice the data we have between 2400 and 2900 to see the potential reservoirs using ".loc"
+8
+# we set the ranges for CNPOR, GR, RHOB
+df_filtered1 = df_choose.loc[(df_drop.CNPOR > 0) & (df_drop.CNPOR <= 100)]
+df_filtered2 = df_filtered1.loc[(df_drop.GR > 0) & (df_drop.GR  <= 500)]
+df_filtered = df_filtered2.loc[(df_drop.RHOB > 1.8) & (df_drop.RHOB  <= 4]
+df_filtered.describe()
+
 def log_plot(logs): # create a function to plot the graphs
     logs = logs.sort_values(by='Depth')
     top = logs.Depth.min()
