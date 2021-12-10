@@ -1,5 +1,30 @@
+# first install the Lasio library
+!pip install lasio
+# import all the necessary libraries
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import lasio
+
+
+las = lasio.read('1051661161.las') # read the lasio file
+df = las.df() # convert the lasio file to a dataframe
+df = df.rename_axis('Depth').reset_index() # change the index "Dept" to a column "Depth"
+df.head() # show the first five rows of the data
+
+# df['Depth']= df['Depth']*0.3048 
+# df.head()
+
+df.isna().sum() # isna function returns True if the location has a null value
+# sum() here is the summation of all the null values in each column
+
+df_drop = df.dropna(subset=['CNPOR','GR', 'RILD', 'RLL3', 'RHOB'],axis=0, how='any') # after finding all the null values, we use "dropna" to drop these null values (all the row)
+df_drop.describe() # describe the table
+
+
 df_choose = df_drop.loc[(df_drop['Depth'] >= 2400) & (df_drop['Depth'] <= 2900)] # here we slice the data we have between 2400 and 2900 to see the potential reservoirs using ".loc"
-8
+
 # we set the ranges for CNPOR, GR, RHOB
 df_filtered1 = df_choose.loc[(df_drop.CNPOR > 0) & (df_drop.CNPOR <= 100)]
 df_filtered2 = df_filtered1.loc[(df_drop.GR > 0) & (df_drop.GR  <= 500)]
