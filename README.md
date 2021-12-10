@@ -1,3 +1,28 @@
+fig = plt.subplots(figsize=(7,10)) # subplots same as before
+
+ax1 = plt.subplot2grid((1,1), (0,0), rowspan=1, colspan=1) # using subplot2grid to put the two figures in 1 graph
+ax2 = ax1.twiny() # twiny for the same purpose
+
+ax1.plot('CNPOR', 'Depth', data=df_filtered, color='red', lw=1.5) # plot CNPOR from dt_filtered, color red, and the line width is 1.5
+ax1.set_xlim(45, -15) # set the ranges from 45 to -15 (to invert the range)
+ax1.set_xlabel('CNPOR') # label x-axis
+ax1.xaxis.label.set_color("red") # x-axis red color
+ax1.tick_params(axis='x', colors="red") # parameters of x-axis red color
+ax1.spines["top"].set_edgecolor("red") # set the x-axis from the top with edge color red
+
+ax2.plot('RHOB', 'Depth', data=df_filtered, color='yellow', lw=1.5) # plot RHOB same as CNPOR
+ax2.set_xlabel('RHOB')
+ax2.xaxis.label.set_color("yellow")
+ax2.spines["top"].set_position(("axes", 1.08))
+ax2.tick_params(axis='x', colors="yellow")
+ax2.spines["top"].set_edgecolor("yellow")
+
+# here we insert a for loop for both axis to set the range of the y-axis
+for ax in [ax1, ax2]:
+    ax.set_ylim(2400, 2900)
+    ax.xaxis.set_ticks_position("top")
+    ax.xaxis.set_label_position("top")
+
 fig1 = plt.subplots(figsize=(7,10))
 
 ax1 = plt.subplot2grid((1,1), (0,0), rowspan=1, colspan=1)
