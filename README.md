@@ -1,3 +1,28 @@
+fig2 = plt.subplots(figsize=(7,10)) # subplots same as before
+
+ax1 = plt.subplot2grid((1,1), (0,0), rowspan=1, colspan=1) # using subplot2grid to put the two figures in 1 graph
+ax2 = ax1.twiny() # twiny for the same purpose
+
+ax1.plot('RILD', 'Depth', data=df_filtered, color='black', lw=1.5) # plot CNPOR from dt_filtered, color red, and the line width is 1.5
+# ax1.set_xlim(45, -15) # set the ranges from 45 to -15 (to invert the range)
+ax1.set_xlabel('RILD') # label x-axis
+ax1.xaxis.label.set_color("black") # x-axis red color
+ax1.tick_params(axis='x', colors="black") # parameters of x-axis red color
+ax1.spines["top"].set_edgecolor("black") # set the x-axis from the top with edge color red
+
+ax2.plot('RLL3', 'Depth', data=df_filtered, color='blue', lw=1.5) # plot RHOB same as CNPOR
+ax2.set_xlabel('RLL3')
+ax2.xaxis.label.set_color("blue")
+ax2.spines["top"].set_position(("axes", 1.08))
+ax2.tick_params(axis='x', colors="blue")
+ax2.spines["top"].set_edgecolor("blue")
+
+# here we insert a for loop for both axis to set the range of the y-axis
+for ax in [ax1, ax2]:
+    ax.set_ylim(2900, 2400)
+    ax.xaxis.set_ticks_position("top")
+    ax.xaxis.set_label_position("top")
+
 df_filtered["DEPTHM"]=df_filtered['Depth']*0.3048 
 ax = df_filtered.plot(x='GR', y='DEPTHM', c='black', lw=0.5, legend=False, figsize=(7,10))
 logi=df_filtered["GR"] <50
