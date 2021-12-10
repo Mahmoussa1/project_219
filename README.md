@@ -1,3 +1,42 @@
+fig1 = plt.subplots(figsize=(7,10))
+
+ax1 = plt.subplot2grid((1,1), (0,0), rowspan=1, colspan=1)
+ax2 = ax1.twiny()
+
+ax1.plot('CNPOR', 'Depth', data=df_filtered, color='red', lw=1.5)
+ax1.set_xlim(45, -15)
+ax1.set_xlabel('CNPOR')
+ax1.xaxis.label.set_color("red")
+ax1.tick_params(axis='x', colors="red")
+ax1.spines["top"].set_edgecolor("red")
+
+ax2.plot('RHOB', 'Depth', data=df_filtered, color='yellow', lw=1.5)
+# ax2.set_xlim(45, -15)
+ax2.set_xlabel('RHOB')
+ax2.xaxis.label.set_color("yellow")
+ax2.spines["top"].set_position(("axes", 1.08))
+ax2.tick_params(axis='x', colors="yellow")
+ax2.spines["top"].set_edgecolor("yellow")
+
+x1=df_filtered['CNPOR']
+x2=df_filtered['RHOB']
+
+x = np.array(ax1.get_xlim())
+z = np.array(ax2.get_xlim())
+
+# here we add this equation to find the difference of x-values of each graph
+nz=((x2-np.max(z))/(np.min(z)-np.max(z)))*(np.max(x)-np.min(x))+np.min(x)
+
+# here we fill this difference with the colors (green when RHOB on the right and CNPOR on the left, yellow otherwise)
+ax1.fill_betweenx(df_filtered['Depth'], x1, nz, where=x1>=nz, interpolate=True, color='green')
+ax1.fill_betweenx(df_filtered['Depth'], x1, nz, where=x1<=nz, interpolate=True, color='yellow')
+
+for ax in [ax1, ax2]:
+    ax.set_ylim(2900, 2400)
+    ax.xaxis.set_ticks_position("top")
+    ax.xaxis.set_label_position("top")
+
+
 fig2 = plt.subplots(figsize=(7,10)) # subplots same as before
 
 ax1 = plt.subplot2grid((1,1), (0,0), rowspan=1, colspan=1) # using subplot2grid to put the two figures in 1 graph
