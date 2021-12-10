@@ -1,3 +1,40 @@
+def log_plot(logs): # create a function to plot the graphs
+    logs = logs.sort_values(by='Depth')
+    top = logs.Depth.min()
+    bot = logs.Depth.max()
+    
+    f, ax = plt.subplots(nrows=1, ncols=5, figsize=(12,8)) # set five subplots for each column we are plotting
+    ax[0].plot(logs.GR, logs.Depth, color='green') # GR and color green
+    ax[1].plot(logs.CNPOR, logs.Depth, color='red') # CNPOR and color red
+    ax[2].plot(logs.RILD, logs.Depth, color='black') # RILD and color black
+    ax[3].plot(logs.RLL3, logs.Depth, color='blue') # RLL3 and color blue
+    ax[4].plot(logs.RHOB, logs.Depth, color='yellow') # RHOB and color yellow
+    
+    for i in range(len(ax)): # for loop over the length of "ax"
+        ax[i].set_ylim(top,bot)
+        ax[i].invert_yaxis() # invert y-axis
+        ax[i].grid()
+        
+    # here we label x-axis and y-axis    
+    ax[0].set_xlabel("GR")
+    ax[0].set_xlim(logs.GR.min(),logs.GR.max())
+    ax[0].set_ylabel("Depth(ft)")
+    ax[1].set_xlabel("CNPOR")
+    ax[1].set_xlim(logs.CNPOR.min(),logs.CNPOR.max())
+    ax[2].set_xlabel("RILD")
+    ax[2].set_xlim(logs.RILD.min(),logs.RILD.max())
+    ax[3].set_xlabel("RLL3")
+    ax[3].set_xlim(logs.RLL3.min(),logs.RLL3.max())
+    ax[4].set_xlabel("RHOB")
+    ax[4].set_xlim(logs.RHOB.min(),logs.RHOB.max())
+    
+    ax[1].set_yticklabels([]); ax[2].set_yticklabels([]);
+    ax[3].set_yticklabels([]); ax[3].set_yticklabels([]);
+    ax[4].set_yticklabels([])
+    
+    f.suptitle('PETE 219 Term Project', fontsize=14,y=0.94) # title of the figure
+
+
 fig = plt.subplots(figsize=(7,10)) # subplots same as before
 
 ax1 = plt.subplot2grid((1,1), (0,0), rowspan=1, colspan=1) # using subplot2grid to put the two figures in 1 graph
