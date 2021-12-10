@@ -1,3 +1,10 @@
+df_filtered["DEPTHM"]=df_filtered['Depth']*0.3048 
+ax = df_filtered.plot(x='GR', y='DEPTHM', c='black', lw=0.5, legend=False, figsize=(7,10))
+logi=df_filtered["GR"] <50
+f=logi.sum()
+z=0.5*0.3048 
+thickness=z*f
+
 fig3, ax = plt.subplots(figsize=(25,10))
 #Set up the plot axes
 ax1 = plt.subplot2grid((1,6), (0,0), rowspan=1, colspan = 1)
